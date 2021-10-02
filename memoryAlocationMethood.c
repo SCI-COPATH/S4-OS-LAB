@@ -22,11 +22,48 @@ void firstFit(partition partitions[],int numberOfPartition,proces process[],int 
         }
     }
 }
-void bistFit(partition partitions[],int numberOfPartition,proces process[],int numberOfProcess){
-
+void bestFit(partition partitions[],int numberOfPartition,proces process[],int numberOfProcess){
+    float availabeMin,temp;
+    int ID=-1;
+    for(int i=0;i<numberOfPartition;i++){
+            partitions[i].available=partitions[i].total;
+            temp+=partitions[i].total;
+    }
+    availabeMin=temp;
+        for(int i=0;i<numberOfProcess;i++){
+            for(int j=0;j<numberOfPartition;j++){
+                if(partitions[j].available<availabeMin&&partitions[j].available>=process[i].size){
+                    availabeMin=partitions[j].available;
+                    ID=partitions[j].ID;
+                }
+            }
+            if(ID>-1){
+                process[i].alotedID=ID;
+                partitions[ID-1].available=partitions[ID-1].available-process[i].size;
+                ID=-1;
+                availabeMin=temp;
+            }
+        }
 }
 void worstFit(partition partitions[],int numberOfPartition,proces process[],int numberOfProcess){
-
+    float availabeMin=-1;
+    int ID=-1;
+    for(int i=0;i<numberOfPartition;i++)
+            partitions[i].available=partitions[i].total;
+        for(int i=0;i<numberOfProcess;i++){
+            for(int j=0;j<numberOfPartition;j++){
+                if(partitions[j].available>availabeMin&&partitions[j].available>=process[i].size){
+                    availabeMin=partitions[j].available;
+                    ID=partitions[j].ID;
+                }
+            }
+            if(ID>-1){
+                process[i].alotedID=ID;
+                partitions[ID-1].available=partitions[ID-1].available-process[i].size;
+                ID=-1;
+                availabeMin=-1;
+            }
+        }
 }
 void display(partition partition[],proces process[],int numberOfProcess){
     printf("Process ID\tProcess Size\tPartition ID\tPartition Size\n");
@@ -61,6 +98,13 @@ void main(){
         process[i].alotedID=-1;
         scanf("%f",&process[i].size);
     }
+    printf("\nFist Fit \n");
     firstFit(partitions,numberOfPartition,process,numberOfProcess);
+    display(partitions,process,numberOfProcess);
+    printf("\nbest Fit \n");
+    bestFit(partitions,numberOfPartition,process,numberOfProcess);
+    display(partitions,process,numberOfProcess);
+    printf("\nWorst Fit \n");
+    worstFit(partitions,numberOfPartition,process,numberOfProcess);
     display(partitions,process,numberOfProcess);
 }
