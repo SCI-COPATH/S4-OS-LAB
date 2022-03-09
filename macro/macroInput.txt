@@ -1,0 +1,12 @@
+PGM     START   0
+ABC     MACRO   &A,&B
+**      STA     &A
+**      STB     &B
+**      MEND    **
+DEF    MACRO   &F,&T
+**      STA     &F
+**      STB     &T
+**      MEND    **
+**      ABC     P,Q
+**      DEF     R,S
+**      END     **
